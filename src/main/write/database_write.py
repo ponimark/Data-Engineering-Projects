@@ -14,4 +14,5 @@ class DatabaseWriter:
                           properties=self.properties)
             logger.info(f"Data successfully written into {table_name} table ")
         except Exception as e:
-            return {f"Message: Error occured {e}"}
+            logger.error(f"Error occurred while writing to {table_name}: {e}")
+

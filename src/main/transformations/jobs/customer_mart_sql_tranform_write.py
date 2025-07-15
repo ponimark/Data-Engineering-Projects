@@ -6,10 +6,11 @@ from src.main.write.database_write import DatabaseWriter
 #calculation for customer mart
 #find out the customer total purchase every month
 #write the data into MySQL table
-def customer_mart_calculation_table_write(final_customer_data_mart_df):
+def customer_mart_calculation_table_write(table_name):
     window = Window.partitionBy("customer_id","sales_date_month")
-    final_customer_data_mart = final_customer_data_mart_df.withColumn("sales_date_month",
-                                           substring(col("sales_date"),1,7))\
+    final_customer_data_mart = table_name.withColumn("sales_date_month",
+                                           to_date(concat(substring(col("sales_date"), 1, 7), lit("-01")),
+                                                   "yyyy-MM-dd"))\
                     .withColumn("total_sales_every_month_by_each_customer",
                                 sum("total_cost").over(window))\
                     .select("customer_id", concat(col("first_name"),lit(" "),col("last_name"))
@@ -17,6 +18,8 @@ def customer_mart_calculation_table_write(final_customer_data_mart_df):
                             "sales_date_month",
                             col("total_sales_every_month_by_each_customer").alias("total_sales"))\
                     .distinct()
+
+    final_customer_data_mart.show()
 
     #Write the Data into MySQL customers_data_mart table
     db_writer = DatabaseWriter(url=config.url,properties=config.properties)
