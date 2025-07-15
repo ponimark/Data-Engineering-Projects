@@ -2,7 +2,7 @@
 
 Let's Start with requirement to complete the projects:-
 1. You should have laptop with minimum 4 GB of RAM, i3 and above (Better to have 8GB with i5).
-2. PyCharm installed in the system. How to install:- https://youtu.be/pPYjX-9JAQY
+2. PyCharm installed in the system.
 4. MySQL workbench should also be installed to the system.
 5. GitHub account is good to have but not necessary.
 5. You should have AWS account.
