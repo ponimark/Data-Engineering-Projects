@@ -1,6 +1,65 @@
+# **Data Engineering Pipeline – Sales & Customer Analytics**
 
+## **📌 Project Overview**
 
-Let's Start with requirement to complete the projects:-
+This project implements an **end-to-end ETL pipeline** using **PySpark**, **AWS S3**, and **MySQL** for processing sales and customer data. It validates incoming CSV files, enriches them with dimension tables, calculates key business metrics, and generates data marts for analytical use.
+
+---
+
+## **🛠️ Key Features**
+
+✔ **Automated CSV Ingestion & Validation**  
+✔ **Schema Validation (Mandatory Columns Check)**  
+✔ **Error Handling & Rejected Files Processing (moved to `rejected_csv` in S3)**  
+✔ **Data Enrichment using Dimension Tables**  
+✔ **Customer & Sales Team Data Marts Generation**  
+✔ **Partitioned Parquet Storage for Analytical Workloads**  
+✔ **Automatic S3 File Movement (Raw → Processed)**  
+✔ **Incremental Status Updates in MySQL Staging Table**
+
+---
+
+## **📂 Project Workflow**
+
+### **1. Input Validation**
+- Reads CSV files from **AWS S3 (raw source directory)**  
+- Checks mandatory columns against config  
+- Moves incorrect files to `rejected_csv/` in S3
+
+### **2. Staging Table Updates**
+- Inserts validated files into **MySQL staging table** with status `'A'` (active)  
+- Updates processed files to status `'I'` (inactive)
+
+### **3. Data Transformation**
+- Joins fact data with dimension tables (Customer, Store, Sales Team)  
+- Handles extra columns by consolidating them into an `additional_column`
+
+### **4. Data Marts**
+- **Customer Data Mart:** Monthly purchase summary for customers  
+- **Sales Team Data Mart:** Incentive and sales performance calculations  
+- Stores results locally as Parquet → uploads to S3
+
+### **5. Partitioned Data for Analytics**
+- Saves **partitioned parquet** by `sales_month` & `store_id`  
+- Uploads partitioned data to S3 with timestamped folder structure
+
+### **6. Calculations**
+- Monthly amount purchased per customer  
+- Incentive calculations for sales team
+
+---
+
+## **⚙️ Technologies Used**
+
+- **Python 3.x**
+- **PySpark (ETL, Transformations)**
+- **AWS S3 (Raw, Rejected, Processed, Data Marts)**
+- **MySQL (Staging & Dimension Tables)**
+- **Boto3 (AWS S3 operations)**
+
+---
+
+Requirement to complete the projects:-
 1. You should have laptop with minimum 4 GB of RAM, i3 and above (Better to have 8GB with i5).
 2. PyCharm installed in the system.
 4. MySQL workbench should also be installed to the system.
